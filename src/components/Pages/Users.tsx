@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getUsers } from '../../services/api';
 import { Link } from 'react-router-dom';
-import styles from './Users.module.css';
+import styles from '../../css/Users.module.css';
 
 const Users = () => {
   const [users, setUsers] = useState<any[]>([]);

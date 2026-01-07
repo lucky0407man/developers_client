@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import type { NavbarProps } from "../../types";
-import "./Navbar.css";
+import "../../css/Navbar.css";
 
 const Navbar = ({ activeKey, onChange }: NavbarProps) => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import SidebarItem from "./SidebarItem";
-import "./Sidebar.module.css";
+import "../../css/Sidebar.module.css";
 
 interface SidebarProps {
   items: string[];

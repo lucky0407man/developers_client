@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getUserById } from '../../services/api';
 import { useParams, Link } from 'react-router-dom';
-import styles from './UserProfile.module.css';
+import styles from '../../css/UserProfile.module.css';
 
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();

@@ -1,0 +1,22 @@
+.sidebar {
+  width: 200px;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
+  padding: 10px;
+}
+
+.sidebarItem {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sidebarItem:hover {
+  background-color: #e0e0e0;
+}
+
+.selected {
+  background-color: #2196f3;
+  color: white;
+  font-weight: bold;
+}

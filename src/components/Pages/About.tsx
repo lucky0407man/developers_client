@@ -36,22 +36,6 @@ function ThemeComponent() {
       </p>
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
         <button 
-          onClick={() => setTheme('light')}
-          style={buttonStyle(theme === 'light')}
-          onMouseOver={(e) => {
-            if (theme !== 'light') {
-              e.currentTarget.style.borderColor = 'var(--button-bg)';
-            }
-          }}
-          onMouseOut={(e) => {
-            if (theme !== 'light') {
-              e.currentTarget.style.borderColor = 'var(--border-color)';
-            }
-          }}
-        >
-          ☀️ Light
-        </button>
-        <button 
           onClick={() => setTheme('dark')}
           style={buttonStyle(theme === 'dark')}
           onMouseOver={(e) => {
@@ -66,6 +50,22 @@ function ThemeComponent() {
           }}
         >
           🌙 Dark
+        </button>
+        <button 
+          onClick={() => setTheme('light')}
+          style={buttonStyle(theme === 'light')}
+          onMouseOver={(e) => {
+            if (theme !== 'light') {
+              e.currentTarget.style.borderColor = 'var(--button-bg)';
+            }
+          }}
+          onMouseOut={(e) => {
+            if (theme !== 'light') {
+              e.currentTarget.style.borderColor = 'var(--border-color)';
+            }
+          }}
+        >
+          ☀️ Light
         </button>
       </div>
     </div>

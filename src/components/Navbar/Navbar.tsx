@@ -13,20 +13,22 @@ const Navbar = ({ activeKey, onChange }: NavbarProps) => {
         alignItems: "center",
         justifyContent: "space-between",
         padding: "0 24px",
-        background: "#333",
-        color: "#fff",
+        background: "var(--navbar-bg)",
+        color: "var(--text-primary)",
+        borderBottom: "1px solid var(--border-color)",
         zIndex: 1000,
         flexShrink: 0,
+        transition: "background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease",
       }}
     >
       <div 
         style={{ display: "flex", gap: "20px" }}
       >
-        <Link to="/" >Home</Link>
-        <Link to="/profile">Profiles</Link> 
-        <Link to="/docs">Docs</Link> 
-        <Link to="/about">About</Link>
-        <Link to="/users">Users</Link>
+        <Link to="/" style={{ color: "var(--text-primary)", textDecoration: "none", fontWeight: "500" }}>Home</Link>
+        <Link to="/profile" style={{ color: "var(--text-primary)", textDecoration: "none", fontWeight: "500" }}>Profiles</Link> 
+        <Link to="/docs" style={{ color: "var(--text-primary)", textDecoration: "none", fontWeight: "500" }}>Docs</Link> 
+        <Link to="/about" style={{ color: "var(--text-primary)", textDecoration: "none", fontWeight: "500" }}>About</Link>
+        <Link to="/users" style={{ color: "var(--text-primary)", textDecoration: "none", fontWeight: "500" }}>Users</Link>
       </div>
     </header>
   );

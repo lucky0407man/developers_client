@@ -11,9 +11,10 @@ const Sidebar: React.FC<SidebarProps> = ({ items, onSelect, selectedItem }) => {
         width: '180px',
         height: '100%',
         overflowY: "auto",
-        borderRight: '1px solid #ddd',
-        backgroundColor: '#f5f5f5',
+        borderRight: '1px solid var(--border-color)',
+        backgroundColor: 'var(--sidebar-bg)',
         flexShrink: 0,
+        transition: 'background-color 0.3s ease, border-color 0.3s ease',
       }}
       >
       {items.map((item) => (

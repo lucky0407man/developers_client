@@ -25,9 +25,9 @@ export interface NavbarProps {
 
 export interface SidebarItemProps {
   icon?: React.ReactNode;
-  label: string;
+  label?: string;
   active?: boolean;
-  onClick?: () => void;
+  onClick: () => void;
 }
 export interface SidebarProps {
   items: string[];

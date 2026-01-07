@@ -29,3 +29,13 @@ export interface SidebarItemProps {
   active?: boolean;
   onClick?: () => void;
 }
+export interface SidebarProps {
+  items: string[];
+  onSelect: (item: string) => void;
+  selectedItem: string;
+}
+export interface SidebarItemProps {
+  item: string;
+  isSelected: boolean;
+  onClick: () => void;
+}

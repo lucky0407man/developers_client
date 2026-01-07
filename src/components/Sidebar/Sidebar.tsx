@@ -1,12 +1,8 @@
 import React from "react";
 import SidebarItem from "./SidebarItem";
 import "../../css/Sidebar.module.css";
+import type { SidebarProps } from "../../types";
 
-interface SidebarProps {
-  items: string[];
-  onSelect: (item: string) => void;
-  selectedItem: string;
-}
 
 const Sidebar: React.FC<SidebarProps> = ({ items, onSelect, selectedItem }) => {
   return (

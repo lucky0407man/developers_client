@@ -69,3 +69,27 @@
   background-color: var(--button-bg);
   color: var(--button-text);
 }
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.createButton {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.deleteButton {
+  background: transparent;
+  color: #e53e3e;
+  border: 1px solid #e53e3e;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}

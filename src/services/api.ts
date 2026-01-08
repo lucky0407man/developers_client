@@ -11,3 +11,18 @@ export const getUserById = async (id: string) => {
   const response = await axios.get(`${API_URL}/users/${id}`);
   return response.data;
 };
+
+export const deleteUser = async (id: string) => {
+  const response = await axios.delete(`${API_URL}/users/${id}`);
+  return response.data;
+};
+
+export const updateUser = async (id: string, payload: any) => {
+  const response = await axios.put(`${API_URL}/users/${id}`, payload);
+  return response.data;
+};
+
+export const createUser = async (payload: any) => {
+  const response = await axios.post(`${API_URL}/users`, payload);
+  return response.data;
+};

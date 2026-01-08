@@ -130,6 +130,63 @@
   transform: translateX(-3px);
 }
 
+.editButton {
+  display: inline-block;
+  margin-left: 12px;
+  background: #48bb78;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.editButton:hover {
+  opacity: 0.95;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.inlineButton {
+  background: #48bb78;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.inlineButton:hover {
+  opacity: 0.95;
+}
+
+.nameInput {
+  font-size: 22px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.errorText {
+  color: #e53e3e;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.inputError {
+  border-color: #e53e3e !important;
+}
+
 @media (max-width: 768px) {
   .container {
     width: 90%;

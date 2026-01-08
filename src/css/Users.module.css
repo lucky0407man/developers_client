@@ -3,24 +3,27 @@
 }
 
 .title {
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--card-bg);
+  box-shadow: 0 2px 4px var(--shadow);
   border-radius: 8px;
   overflow: hidden;
+  transition: background-color 0.3s ease;
 }
 
 .table thead {
-  background-color: #4a5568;
-  color: #fff;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .table th {
@@ -33,12 +36,12 @@
 }
 
 .table tbody tr {
-  border-bottom: 1px solid #e2e8f0;
-  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease, border-color 0.3s ease;
 }
 
 .table tbody tr:hover {
-  background-color: #f7fafc;
+  background-color: var(--bg-secondary);
 }
 
 .table tbody tr:last-child {
@@ -47,12 +50,13 @@
 
 .table td {
   padding: 15px;
-  color: #4a5568;
+  color: var(--text-secondary);
   font-size: 14px;
+  transition: color 0.3s ease;
 }
 
 .profileLink {
-  color: #3182ce;
+  color: var(--button-bg);
   text-decoration: none;
   font-weight: 500;
   padding: 6px 12px;
@@ -62,6 +66,6 @@
 }
 
 .profileLink:hover {
-  background-color: #3182ce;
-  color: #fff;
+  background-color: var(--button-bg);
+  color: var(--button-text);
 }

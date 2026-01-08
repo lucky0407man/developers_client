@@ -1,16 +1,16 @@
 import {useReducer} from 'react';
 
-interface State {
+interface Doc_State {
    count: number
 };
 
 type CounterAction =
   | { type: "reset" }
-  | { type: "setCount"; value: State["count"] }
+  | { type: "setCount"; value: Doc_State["count"] }
 
-const initialState: State = { count: 0 };
+const initialState: Doc_State = { count: 0 };
 
-function stateReducer(state: State, action: CounterAction): State {
+function stateReducer(state: Doc_State, action: CounterAction): Doc_State {
   switch (action.type) {
     case "reset":
       return initialState;

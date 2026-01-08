@@ -1,4 +1,5 @@
 // Theme types
+import { ReactNode } from "react";
 export type Theme = "light" | "dark" | "system";
 
 export interface ThemeContextValue {
@@ -38,4 +39,7 @@ export interface SidebarItemProps {
   item: string;
   isSelected: boolean;
   onClick: () => void;
+}
+export interface ThemeProviderProps {
+  children: ReactNode;
 }

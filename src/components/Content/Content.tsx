@@ -11,7 +11,8 @@ const Content: React.FC<ContentProps> = ({ selectedItem }) => {
         flex: 1,
         height: '100%',
         overflowY: "auto",
-        backgroundColor: '#fff',
+        backgroundColor: 'var(--bg-primary)',
+        transition: 'background-color 0.3s ease',
       }}
       >
       <div style={{ flex: 1, padding: "20px" }}>

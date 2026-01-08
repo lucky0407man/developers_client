@@ -1,11 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import type { Theme, ThemeContextValue } from '../types/types';
+import type { ThemeProviderProps } from '../types/types';
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
-
-interface ThemeProviderProps {
-  children: ReactNode;
-}
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(() => {

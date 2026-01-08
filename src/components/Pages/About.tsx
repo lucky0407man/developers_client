@@ -67,6 +67,22 @@ function ThemeComponent() {
         >
           ☀️ Light
         </button>
+        <button 
+          onClick={() => setTheme('system')}
+          style={buttonStyle(theme === 'system')}
+          onMouseOver={(e) => {
+            if (theme !== 'system') {
+              e.currentTarget.style.borderColor = 'var(--button-bg)';
+            }
+          }}
+          onMouseOut={(e) => {
+            if (theme !== 'system') {
+              e.currentTarget.style.borderColor = 'var(--border-color)';
+            }
+          }}
+        >
+          💻 System
+        </button>
       </div>
     </div>
   );

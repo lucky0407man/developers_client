@@ -96,10 +96,10 @@ const UserProfile = () => {
             </div>
 
             <div className="p-4 md:p-8 space-y-6">
-              <div>
-                <label className="block text-xs md:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                <label className="text-xs md:text-sm font-semibold text-gray-200 dark:text-gray-300 mb-1 md:mb-0">Email Address</label>
                 {isEditing ? (
-                  <>
+                  <div className="w-full md:w-3/4">
                     <input
                       type="email"
                       className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200 text-sm md:text-base ${
@@ -109,16 +109,16 @@ const UserProfile = () => {
                       onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                     />
                     {errors.email && <p className="mt-2 text-red-500 text-xs md:text-sm font-medium">{errors.email}</p>}
-                  </>
+                  </div>
                 ) : (
-                  <p className="text-base md:text-lg text-gray-700 dark:text-gray-300">{user.email}</p>
+                  <p className="text-base md:text-lg text-gray-100 dark:text-gray-200 break-words md:ml-4">{user.email}</p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-xs md:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Age</label>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                <label className="text-xs md:text-sm font-semibold text-gray-200 dark:text-gray-300 mb-1 md:mb-0">Age</label>
                 {isEditing ? (
-                  <>
+                  <div className="w-full md:w-3/4">
                     <input
                       type="number"
                       className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200 text-sm md:text-base ${
@@ -128,9 +128,9 @@ const UserProfile = () => {
                       onChange={e => setForm(f => ({ ...f, age: e.target.value }))}
                     />
                     {errors.age && <p className="mt-2 text-red-500 text-xs md:text-sm font-medium">{errors.age}</p>}
-                  </>
+                  </div>
                 ) : (
-                  <p className="text-base md:text-lg text-gray-700 dark:text-gray-300">{user.age} years old</p>
+                  <p className="text-base md:text-lg text-gray-100 dark:text-gray-200 md:ml-4">{user.age} years old</p>
                 )}
               </div>
             </div>

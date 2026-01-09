@@ -1,32 +1,38 @@
 import React, { useState } from 'react';
 import { createUser } from '../../services/api';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAppDispatch } from '../../store/hooks';
+import { addUser, setError, setLoading } from '../../store/slices/userSlice';
+import { validateUserForm, hasErrors, ValidationErrors } from '../../utils/validation';
 
 const CreateUser = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [form, setForm] = useState({ name: '', email: '', age: '' });
-  const [errors, setErrors] = useState<{ name?: string; email?: string; age?: string }>({});
-
-  const validate = () => {
-    const e: { name?: string; email?: string; age?: string } = {};
-    if (!form.name.trim()) e.name = 'Name is required.';
-    if (!form.email.trim()) e.email = 'Email is required.';
-    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) e.email = 'Enter a valid email.';
-    if (!form.age.toString().trim()) e.age = 'Age is required.';
-    else if (Number.isNaN(Number(form.age)) || Number(form.age) <= 0) e.age = 'Enter a valid age.';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
+  const [errors, setErrors] = useState<ValidationErrors>({});
 
   const handleSave = async () => {
-    if (!validate()) return;
+    const validationErrors = validateUserForm({
+      name: form.name,
+      email: form.email,
+      age: form.age,
+    });
+
+    setErrors(validationErrors);
+    if (hasErrors(validationErrors)) return;
+
+    dispatch(setLoading(true));
     try {
       const payload = { name: form.name, email: form.email, age: Number(form.age) };
-      await createUser(payload);
+      const response = await createUser(payload);
+      dispatch(addUser(response));
       navigate('/users');
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to create user';
+      dispatch(setError(errorMessage));
       console.error('Create failed', err);
-      alert('Failed to create user');
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 

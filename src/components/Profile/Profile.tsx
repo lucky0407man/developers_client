@@ -10,7 +10,7 @@ const Profile = () => {
                 , "Ingrid", "Judy", "Mallory", "Niaj", "Olivia", "Peggy", "Sylvia"
                 , "Trent", "Victor", "Walter", "Xavier", "Yvonne", "Zara"];
     return (
-        <div style={{ flex: 1, display: "flex", height: "100%" }}>
+        <div className="flex h-full w-full flex-col md:flex-row">
             <Sidebar
             items={items}
             selectedItem={selectedItem}

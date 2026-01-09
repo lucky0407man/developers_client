@@ -43,3 +43,6 @@ export interface SidebarItemProps {
 export interface ThemeProviderProps {
   children: ReactNode;
 }
+export interface ContentProps {
+  selectedItem: string;
+}

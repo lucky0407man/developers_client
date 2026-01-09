@@ -1,8 +1,6 @@
 import React from "react";
+import type { ContentProps } from "../../types/types";
 
-interface ContentProps {
-  selectedItem: string;
-}
 
 const Content: React.FC<ContentProps> = ({ selectedItem }) => {
   return (

@@ -4,16 +4,16 @@
   box-sizing: border-box;
 }
 
-.app {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+html, body, #root {
+  height: 100%;
+  width: 100%;
   overflow: hidden;
 }
 
+.app {
+  @apply h-screen flex flex-col overflow-hidden bg-white dark:bg-gray-900;
+}
+
 .main-content {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  @apply flex-1 overflow-y-auto flex flex-col;
 }

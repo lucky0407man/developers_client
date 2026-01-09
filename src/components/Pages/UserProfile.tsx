@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getUserById, updateUser } from '../../services/api';
 import { useParams, Link } from 'react-router-dom';
-import styles from '../../css/UserProfile.module.css';
 
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,15 +39,15 @@ const UserProfile = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 overflow-y-auto">
+      <div className="p-4 md:p-8">
       {user ? (
-        <>
-          <div className={styles.topRow}>
-            <Link to="/users" className={styles.backButton}>
+        <div className="max-w-2xl mx-auto">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 md:mb-8">
+            <Link to="/users" className="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors duration-200 text-sm md:text-base w-full sm:w-auto justify-center sm:justify-start">
               ← Back to Users
             </Link>
             <button
-              className={styles.inlineButton}
               onClick={async () => {
                 if (isEditing) {
                   if (!validate()) return;
@@ -66,80 +65,84 @@ const UserProfile = () => {
                   setIsEditing(true);
                 }
               }}
+              className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-sm md:text-base"
             >
-              {isEditing ? 'Save' : 'Edit'}
+              {isEditing ? '✓ Save' : '✎ Edit'}
             </button>
           </div>
-          <div className={styles.card}>
-              <div className={styles.header}>
-              <div className={styles.avatar}>
+
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 md:p-12 text-center">
+              <div className="inline-flex items-center justify-center w-16 md:w-24 h-16 md:h-24 bg-white dark:bg-gray-200 rounded-full text-2xl md:text-4xl font-bold text-blue-600 mb-4 shadow-lg">
                 {getInitials(user.name)}
               </div>
               {isEditing ? (
-                <div style={{ textAlign: 'center' }}>
+                <div>
                   <input
-                    className={`${styles.nameInput} ${errors.name ? styles.inputError : ''}`}
+                    className={`w-full px-4 py-2 text-base md:text-2xl font-bold text-center border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+                      errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    }`}
                     value={form.name}
                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                   />
-                  {errors.name && <div className={styles.errorText}>{errors.name}</div>}
+                  {errors.name && <p className="mt-2 text-red-500 text-xs md:text-sm">{errors.name}</p>}
                 </div>
               ) : (
                 <>
-                  <h1 className={styles.name}>{user.name}</h1>
-                  <p className={styles.title}>User Profile</p>
+                  <h1 className="text-2xl md:text-4xl font-bold text-white">{user.name}</h1>
+                  <p className="text-blue-100 mt-2 text-sm md:text-base">User Profile</p>
                 </>
               )}
             </div>
-            
-              <table className={styles.table}>
-              <tbody>
-                <tr>
-                  <td>Email Address</td>
-                  <td>
-                    {isEditing ? (
-                      <>
-                        <input
-                          type="text"
-                          className={errors.email ? styles.inputError : ''}
-                          value={form.email}
-                          onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                        />
-                        {errors.email && <div className={styles.errorText}>{errors.email}</div>}
-                      </>
-                    ) : (
-                      user.email
-                    )}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Age</td>
-                  <td>
-                    {isEditing ? (
-                      <>
-                        <input
-                          type="number"
-                          className={errors.age ? styles.inputError : ''}
-                          value={form.age}
-                          onChange={e => setForm(f => ({ ...f, age: e.target.value }))}
-                        />
-                        {errors.age && <div className={styles.errorText}>{errors.age}</div>}
-                      </>
-                    ) : (
-                      `${user.age} years`
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+
+            <div className="p-4 md:p-8 space-y-6">
+              <div>
+                <label className="block text-xs md:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+                {isEditing ? (
+                  <>
+                    <input
+                      type="email"
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200 text-sm md:text-base ${
+                        errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600'
+                      }`}
+                      value={form.email}
+                      onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                    />
+                    {errors.email && <p className="mt-2 text-red-500 text-xs md:text-sm font-medium">{errors.email}</p>}
+                  </>
+                ) : (
+                  <p className="text-base md:text-lg text-gray-700 dark:text-gray-300">{user.email}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs md:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Age</label>
+                {isEditing ? (
+                  <>
+                    <input
+                      type="number"
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200 text-sm md:text-base ${
+                        errors.age ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600'
+                      }`}
+                      value={form.age}
+                      onChange={e => setForm(f => ({ ...f, age: e.target.value }))}
+                    />
+                    {errors.age && <p className="mt-2 text-red-500 text-xs md:text-sm font-medium">{errors.age}</p>}
+                  </>
+                ) : (
+                  <p className="text-base md:text-lg text-gray-700 dark:text-gray-300">{user.age} years old</p>
+                )}
+              </div>
+            </div>
           </div>
-        </>
+        </div>
       ) : (
-        <div className={styles.loading}>
-          <div className={styles.loadingSpinner}></div>
-          <p>Loading user profile...</p>
+        <div className="flex flex-col items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg">Loading user profile...</p>
         </div>
       )}
+      </div>
     </div>
   );
 };

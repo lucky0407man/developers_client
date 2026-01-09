@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { getUsers, deleteUser, updateUser } from '../../services/api';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setUsers, updateUser as updateUserAction, deleteUser as deleteUserAction, setLoading } from '../../store/slices/userSlice';
 
 const Users = () => {
-  const [users, setUsers] = useState<any[]>([]);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const users = useAppSelector(state => state.user.users);
+  
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [tempValue, setTempValue] = useState<string>('');
@@ -12,17 +16,24 @@ const Users = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const data = await getUsers();
-      setUsers(data);
+      dispatch(setLoading(true));
+      try {
+        const data = await getUsers();
+        dispatch(setUsers(data));
+      } catch (err) {
+        console.error('Failed to fetch users', err);
+      } finally {
+        dispatch(setLoading(false));
+      }
     };
     fetchUsers();
-  }, []);
+  }, [dispatch]);
 
   const handleSave = useCallback(async () => {
     if (!editingUserId || !editingField) return;
     try {
       const updatedUser = await updateUser(editingUserId, { [editingField]: tempValue });
-      setUsers(prev => prev.map(u => u._id === editingUserId ? updatedUser : u));
+      dispatch(updateUserAction(updatedUser));
       setEditingUserId(null);
       setEditingField(null);
       setTempValue('');
@@ -33,7 +44,7 @@ const Users = () => {
       setEditingField(null);
       setTempValue('');
     }
-  }, [editingUserId, editingField, tempValue]);
+  }, [editingUserId, editingField, tempValue, dispatch]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -55,12 +66,10 @@ const Users = () => {
     };
   }, [editingUserId, handleSave]);
 
-  const navigate = useNavigate();
-
   const handleDelete = async (id: string) => {
     try {
       await deleteUser(id);
-      setUsers(prev => prev.filter(u => u._id !== id));
+      dispatch(deleteUserAction(id));
     } catch (err) {
       console.error('Delete failed', err);
       alert('Failed to delete user');

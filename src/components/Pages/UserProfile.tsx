@@ -1,32 +1,58 @@
 import React, { useEffect, useState } from 'react';
-import { getUserById, updateUser } from '../../services/api';
+import { getUserById, updateUser as updateUserAPI } from '../../services/api';
 import { useParams, Link } from 'react-router-dom';
+import { useAppDispatch } from '../../store/hooks';
+import { setCurrentUser, updateUser, setLoading } from '../../store/slices/userSlice';
+import { validateUserForm, hasErrors, ValidationErrors } from '../../utils/validation';
 
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
   const [user, setUser] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', age: '' });
-  const [errors, setErrors] = useState<{ name?: string; email?: string; age?: string }>({});
+  const [errors, setErrors] = useState<ValidationErrors>({});
 
   useEffect(() => {
     const fetchUser = async () => {
-      const data = await getUserById(id!);
-      setUser(data);
-      setForm({ name: data.name || '', email: data.email || '', age: String(data.age || '') });
+      dispatch(setLoading(true));
+      try {
+        const data = await getUserById(id!);
+        setUser(data);
+        dispatch(setCurrentUser(data));
+        setForm({ name: data.name || '', email: data.email || '', age: String(data.age || '') });
+      } catch (err) {
+        console.error('Failed to fetch user', err);
+      } finally {
+        dispatch(setLoading(false));
+      }
     };
-    fetchUser();
-  }, [id]);
+    if (id) fetchUser();
+  }, [id, dispatch]);
 
-  const validate = () => {
-    const e: { name?: string; email?: string; age?: string } = {};
-    if (!form.name.trim()) e.name = 'Name is required.';
-    if (!form.email.trim()) e.email = 'Email is required.';
-    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) e.email = 'Enter a valid email.';
-    if (!form.age.toString().trim()) e.age = 'Age is required.';
-    else if (Number.isNaN(Number(form.age)) || Number(form.age) <= 0) e.age = 'Enter a valid age.';
-    setErrors(e);
-    return Object.keys(e).length === 0;
+  const handleSave = async () => {
+    const validationErrors = validateUserForm({
+      name: form.name,
+      email: form.email,
+      age: form.age,
+    });
+
+    setErrors(validationErrors);
+    if (hasErrors(validationErrors)) return;
+
+    try {
+      dispatch(setLoading(true));
+      const payload = { name: form.name, email: form.email, age: Number(form.age) };
+      const updated = await updateUserAPI(id!, payload);
+      setUser(updated);
+      dispatch(updateUser(updated));
+      setIsEditing(false);
+    } catch (err) {
+      console.error('Update failed', err);
+      alert('Failed to save user');
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   const getInitials = (name: string) => {
@@ -48,23 +74,7 @@ const UserProfile = () => {
               ← Back to Users
             </Link>
             <button
-              onClick={async () => {
-                if (isEditing) {
-                  if (!validate()) return;
-                  try {
-                    const payload = { name: form.name, email: form.email, age: Number(form.age) };
-                    const updated = await updateUser(id!, payload);
-                    setUser(updated);
-                    setIsEditing(false);
-                    setErrors({});
-                  } catch (err) {
-                    console.error('Update failed', err);
-                    alert('Failed to save user');
-                  }
-                } else {
-                  setIsEditing(true);
-                }
-              }}
+              onClick={isEditing ? handleSave : () => setIsEditing(true)}
               className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-sm md:text-base"
             >
               {isEditing ? '✓ Save' : '✎ Edit'}

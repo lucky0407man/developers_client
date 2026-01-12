@@ -110,6 +110,33 @@ const Users = () => {
     );
   };
 
+  const getInitials = (name: string) => {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .substring(0, 1);
+  };
+
+  const renderAvatar = (user: any) => {
+    if (user.avatar?.data && user.avatar?.contentType) {
+      return (
+        <img
+          src={`data:${user.avatar.contentType};base64,${user.avatar.data}`}
+          alt={user.name}
+          className="w-10 h-10 rounded-full object-cover"
+        />
+      );
+    }
+    return (
+      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
+        {getInitials(user.name)}
+      </div>
+    );
+  };
+
   return (
     <div className="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800 overflow-y-auto">
       <div className="p-8">
@@ -128,6 +155,7 @@ const Users = () => {
           <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600">
               <tr>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-left text-xs md:text-sm font-semibold text-gray-900 dark:text-white">Avatar</th>
                 <th className="px-3 md:px-6 py-3 md:py-4 text-left text-xs md:text-sm font-semibold text-gray-900 dark:text-white">Name</th>
                 <th className="hidden md:table-cell px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Email</th>
                 <th className="hidden lg:table-cell px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Age</th>
@@ -138,6 +166,9 @@ const Users = () => {
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {users.map((user) => (
                 <tr key={user._id} className="hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-150">
+                  <td className="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-900 dark:text-gray-100">
+                    {renderAvatar(user)}
+                  </td>
                   <td className="px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-900 dark:text-gray-100">
                     {renderCell(user, 'name')}
                   </td>

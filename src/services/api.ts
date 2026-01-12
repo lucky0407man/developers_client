@@ -27,3 +27,14 @@ export const createUser = async (payload: any) => {
   const response = await axios.post(`${API_URL}/users`, payload);
   return response.data;
 };
+
+export const uploadAvatar = async (id: string, file: File) => {
+  const formData = new FormData();
+  formData.append('avatar', file);
+  const response = await axios.post(`${API_URL}/users/${id}/avatar`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createUser } from '../../services/api';
+import { createUser, uploadAvatar } from '../../services/api';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch } from '../../store/hooks';
 import { addUser, setError, setLoading } from '../../store/slices/userSlice';
@@ -10,6 +10,21 @@ const CreateUser = () => {
   const dispatch = useAppDispatch();
   const [form, setForm] = useState({ name: '', email: '', age: '' });
   const [errors, setErrors] = useState<ValidationErrors>({});
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAvatarFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSave = async () => {
     const validationErrors = validateUserForm({
@@ -25,6 +40,12 @@ const CreateUser = () => {
     try {
       const payload = { name: form.name, email: form.email, age: Number(form.age) };
       const response = await createUser(payload);
+      
+      // Upload avatar if selected
+      if (avatarFile && response._id) {
+        await uploadAvatar(response._id, avatarFile);
+      }
+      
       dispatch(addUser(response));
       navigate('/users');
     } catch (err) {
@@ -56,6 +77,37 @@ const CreateUser = () => {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8">Create New User</h1>
 
           <div className="space-y-6">
+            <div>
+              <label className="block text-xs md:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Avatar (Optional)</label>
+              <div className="flex items-center gap-4">
+                {avatarPreview ? (
+                  <img
+                    src={avatarPreview}
+                    alt="Avatar preview"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl font-bold">
+                    {form.name ? form.name[0].toUpperCase() : '?'}
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg transition-colors text-sm md:text-base"
+                >
+                  Choose Image
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                  className="hidden"
+                />
+              </div>
+            </div>
+
             <div>
               <label className="block text-xs md:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Name</label>
               <input 

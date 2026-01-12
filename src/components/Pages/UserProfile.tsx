@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getUserById, updateUser as updateUserAPI } from '../../services/api';
+import { getUserById, updateUser as updateUserAPI, uploadAvatar as uploadAvatarAPI } from '../../services/api';
 import { useParams, Link } from 'react-router-dom';
 import { useAppDispatch } from '../../store/hooks';
 import { setCurrentUser, updateUser, setLoading } from '../../store/slices/userSlice';
@@ -12,6 +12,24 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', age: '' });
   const [errors, setErrors] = useState<ValidationErrors>({});
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !id) return;
+
+    try {
+      dispatch(setLoading(true));
+      const updated = await uploadAvatarAPI(id, file);
+      setUser(updated);
+      dispatch(updateUser(updated));
+    } catch (err) {
+      console.error('Avatar upload failed', err);
+      alert('Failed to upload avatar');
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -83,9 +101,37 @@ const UserProfile = () => {
 
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 md:p-12 text-center">
-              <div className="inline-flex items-center justify-center w-16 md:w-24 h-16 md:h-24 bg-white dark:bg-gray-200 rounded-full text-2xl md:text-4xl font-bold text-blue-600 mb-4 shadow-lg">
-                {getInitials(user.name)}
+              <div className="relative inline-block mb-4">
+                {user.avatar?.data && user.avatar?.contentType ? (
+                  <img
+                    src={`data:${user.avatar.contentType};base64,${user.avatar.data}`}
+                    alt={user.name}
+                    className="w-16 md:w-24 h-16 md:h-24 rounded-full object-cover shadow-lg border-4 border-white"
+                  />
+                ) : (
+                  <div className="inline-flex items-center justify-center w-16 md:w-24 h-16 md:h-24 bg-white dark:bg-gray-200 rounded-full text-2xl md:text-4xl font-bold text-blue-600 shadow-lg">
+                    {getInitials(user.name)}
+                  </div>
+                )}
+                {isEditing && (
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute bottom-0 right-0 bg-white dark:bg-gray-700 rounded-full p-2 shadow-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                    title="Upload avatar"
+                  >
+                    <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </button>
+                )}
               </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarUpload}
+                className="hidden"
+              />
               {isEditing ? (
                 <div>
                   <input
